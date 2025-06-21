@@ -7,10 +7,8 @@
     </v-app-bar>
 
     <v-main>
-      <v-container>
-        <Game></Game>
-        <Game></Game>
-        <Game></Game>
+      <v-container v-for="game in games" key="game">
+        <Game :game="game"></Game>
       </v-container>
     </v-main>
   </v-app>
@@ -22,3 +20,16 @@
     color: white;
 }
 </style>
+
+<script setup>
+import axios from 'axios'
+import { ref, onMounted } from 'vue'
+
+const api = "http://localhost:3001/"
+const games = ref([])
+
+onMounted(async () => {
+    const response = await axios.get(api + "igre")
+    games.value = response.data.igre
+})
+</script>
