@@ -3,11 +3,9 @@
     app
     height="40"
   >
-    
 
     <div
       class="text-caption text-disabled"
-      style="position: absolute;"
     >
       &copy; 2025 <span class="d-none d-sm-inline-block">JoyGame, LLC</span>
       —
