@@ -8,13 +8,13 @@
 
     <v-main>
       <v-container v-for="game in games" key="game">
-        <Game :game="game" @update-form-type="formType = $event"></Game>
+          <Game :game="game" @update-form-type="formType = $event" @deleteGame="deleteGame($event)" @sendID="editID = $event"></Game>
       </v-container>
     </v-main>
 
     <v-pagination :length="Math.ceil(pages/10)" v-model="page"></v-pagination>
 
-    <Form :formType="formType" @update-form-type="formType = $event"></Form>
+    <Form :formType="formType" @update-form-type="formType = $event" @addGame="addGame($event)" @editGame="editGame($event)"></Form>
   </v-app>
 </template>
 
@@ -43,9 +43,11 @@ const games = ref([])
 const pages = ref()
 const page = ref(1)
 const formType = ref(0)
+const editID = ref()
 
 onMounted(async () => {
     getData()
+    
 })
 
 async function getData() {
@@ -58,9 +60,26 @@ async function getData() {
     games.value = response.data.igre
 }
 
-watch(page, () => {getData()})
+watch(page, () => {getData();window.scrollTo(0, 0)})
 
 function addForm() {
   formType.value = 1
 }
+
+async function addGame(game) {
+  const response = await axios.post(api + "dodaj", game)
+  getData()
+}
+
+async function deleteGame(id) {
+  const response = await axios.delete(api + "izbrisi/" + id)
+  getData()
+}
+
+async function editGame(game) {
+  game.ID = editID.value
+  const response = await axios.put(api + "promjeni/" + game.ID, game)
+  getData()
+}
+
 </script>

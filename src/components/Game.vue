@@ -9,7 +9,7 @@
         </v-container>
         <v-btn color="primary">download</v-btn>
         <v-btn color="primary" @click="changeFormType(2)">edit</v-btn>
-        <v-btn color="primary">x</v-btn>
+        <v-btn color="primary" @click="deleteGame(game)">x</v-btn>
     </v-card>
 </template>
 
@@ -27,8 +27,13 @@
     const props = defineProps({
         game: Object
     })
-    const emit = defineEmits(['updateFormType'])
+    const emit = defineEmits(['updateFormType', 'deleteGame', 'sendID'])
     function changeFormType(type) {
         emit('updateFormType', type)
+        emit('sendID', props.game.ID)
+    }
+
+    function deleteGame(game) {
+        emit('deleteGame', game.ID)
     }
 </script>
