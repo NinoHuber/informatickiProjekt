@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-4 my-3">
     <v-row align="center" class="mb-2">
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="2">
         <h3 class="text-h6">{{ game.title }}</h3>
         <h4 class="text-subtitle-2">Release date: {{ game.year }}</h4>
       </v-col>

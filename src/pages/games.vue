@@ -13,15 +13,15 @@
     </header>
 
     <v-container class="my-4">
-  <v-row>
-    <v-col cols="12" md="6">
-      <v-text-field
+    <v-row>
+      <v-col cols="12" md="6">
+        <v-text-field
         v-model="searchQuery"
         label="Search by title or description"
         clearable
         append-icon="mdi-magnify"
-      />
-    </v-col>
+        />
+      </v-col>
 
       <v-col cols="12" md="6">
         <v-select
