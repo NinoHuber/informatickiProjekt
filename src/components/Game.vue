@@ -1,33 +1,42 @@
 <template>
-    <v-card class="card px-5" height="100px">
-        <h3>{{ game.title }}</h3>
-        <p style="overflow-y:auto; max-height: 100px;">{{ game.description }}</p>
-        <h3>release date: {{ game.year }}</h3>
-        <v-container>
-            <v-chip class="mx-1">{{ game.genres.split(',')[0] }}</v-chip>
-            <v-chip class="mx-1"> {{ game.genres.split(',')[1] }}</v-chip>
-        </v-container>
-        <v-btn color="primary">download</v-btn>
-        <v-btn color="primary" @click="changeFormType(2)">edit</v-btn>
-        <v-btn color="primary" @click="deleteGame(game)">x</v-btn>
-    </v-card>
-</template>
+  <v-card class="pa-4 my-3">
+    <v-row align="center" class="mb-2">
+      <v-col cols="12" md="4">
+        <h3 class="text-h6">{{ game.title }}</h3>
+        <h4 class="text-subtitle-2">Release date: {{ game.year }}</h4>
+      </v-col>
 
-<style scoped>
-.card {
-    display: grid;
-    grid-template-columns: 0.8fr 3fr auto auto 0.8fr 0.5fr 0.2fr;
-    gap: 5px;
-    align-items: center;
-}
-</style>
+      <v-col cols="12" md="8">
+        <p class="mb-2" style="max-height: 100px; overflow-y: auto;">
+          {{ game.description }}
+        </p>
+        <div class="d-flex flex-wrap my-2">
+          <v-chip
+            v-for="(genre, index) in game.genres.split(',')"
+            :key="index"
+            class="ma-1"
+            size="small"
+          >
+            {{ genre }}
+          </v-chip>
+        </div>
+
+        <div class="d-flex flex-wrap mt-3">
+          <v-btn color="primary" class="ma-1" @click="$emit('download')">Download</v-btn>
+          <v-btn color="secondary" class="ma-1" @click="changeFormType(2)">Edit</v-btn>
+          <v-btn color="error" class="ma-1" @click="deleteGame(game)">Delete</v-btn>
+        </div>
+      </v-col>
+    </v-row>
+  </v-card>
+</template>
 
 <script setup>
     import { defineProps, defineEmits } from 'vue';
     const props = defineProps({
         game: Object
     })
-    const emit = defineEmits(['updateFormType', 'deleteGame', 'sendID'])
+    const emit = defineEmits(['updateFormType', 'deleteGame', 'sendID', 'download'])
     function changeFormType(type) {
         emit('updateFormType', type)
         emit('sendID', props.game.ID)

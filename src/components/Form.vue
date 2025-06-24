@@ -86,8 +86,8 @@ const emit = defineEmits(['updateFormType', 'addGame', 'editGame'])
 function changeFormType(type) {
     emit('updateFormType', type)
     changedGame.value = {}
-    genre1 = ""
-    genre2 = ""
+    genre1.value = ""
+    genre2.value = ""
 }
 
 function changeGame(gameObj) {
