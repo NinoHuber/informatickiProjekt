@@ -24,13 +24,37 @@ app.get('/igre', async (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
   const offset = (page - 1) * limit;
 
+  const search = req.query.search || '';
+  const genre = req.query.genre || '';
+
   try {
-    const [totalResult] = await pool.query('SELECT COUNT(*) as total FROM igre');
+    // Build WHERE clause based on optional filters
+    let whereClauses = [];
+    let params = [];
+
+    if (search) {
+      whereClauses.push(`(title LIKE ? OR description LIKE ?)`);
+      params.push(`%${search}%`, `%${search}%`);
+    }
+
+    if (genre) {
+      whereClauses.push(`genres LIKE ?`);
+      params.push(`%${genre}%`);
+    }
+
+    const whereSQL = whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
+
+    // Count total results for pagination
+    const [totalResult] = await pool.query(
+      `SELECT COUNT(*) as total FROM igre ${whereSQL}`,
+      params
+    );
     const total = totalResult[0].total;
 
+    // Add LIMIT & OFFSET for paginated results
     const [igre] = await pool.query(
-      'SELECT * FROM igre ORDER BY id ASC LIMIT ? OFFSET ?',
-      [limit, offset]
+      `SELECT * FROM igre ${whereSQL} ORDER BY id ASC LIMIT ? OFFSET ?`,
+      [...params, limit, offset]
     );
 
     res.json({ total, igre });
